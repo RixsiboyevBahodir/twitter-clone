@@ -11,18 +11,24 @@ import { FaRegCircleUser } from "react-icons/fa6";
 import { CgMoreO } from "react-icons/cg";
 import { FaUserCircle } from "react-icons/fa";
 import { BsThreeDots } from "react-icons/bs";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 export default function Sidebar() {
+  const location = useLocation();
+  const isHomeActive = location.pathname.startsWith("/home");
+
   const navLinkStyle = ({ isActive }: { isActive: boolean }) => {
     return `flex items-center gap-5 p-2 ${isActive ? "bg-black rounded-md text-white" : ""}`;
   };
 
   return (
-    <div className="w-1/5 shrink-0 py-4 relative">
+    <div className="w-1/5 shrink-0 py-4 relative pr-5">
       <FaXTwitter className="text-3xl ml-2" />
       <div className="py-4 flex flex-col gap-3">
-        <NavLink to={"/"} className={navLinkStyle}>
+        <NavLink
+          to="/home"
+          className={() => navLinkStyle({ isActive: isHomeActive })}
+        >
           <IoHomeOutline className="text-2xl" />
           <p className="font-medium text-[17px]">Home</p>
         </NavLink>

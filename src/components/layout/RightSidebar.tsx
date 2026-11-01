@@ -1,9 +1,10 @@
 import { Input } from "../ui/input";
 import { IoSearchOutline } from "react-icons/io5";
+import PremiumWidget from "../ui/widgets/PremiumWidget";
 
 export default function RightSidebar() {
   return (
-    <div className="w-[30%] shrink-0 border py-5 px-6">
+    <div className="w-[30%] shrink-0 py-4 pl-5">
       <div className="relative">
         <IoSearchOutline
           aria-hidden="true"
@@ -11,6 +12,7 @@ export default function RightSidebar() {
         />
         <Input className="pl-9 py-5 rounded-3xl" placeholder="Search" />
       </div>
+     <PremiumWidget/>
     </div>
   );
 }

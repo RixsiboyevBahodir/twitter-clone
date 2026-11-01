@@ -12,7 +12,7 @@ export default function MainLayout({
   return (
     <div className="flex w-full min-h-screen">
       <Sidebar />
-      <main className="w-[45%] min-w-0 shrink-0">
+      <main className="w-[50%] min-w-0 shrink-0 border h-screen overflow-y-scroll">
         <Outlet />
       </main>
       {showRightSidebar && <RightSidebar />}

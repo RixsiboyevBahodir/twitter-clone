@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "../pages/home/Home";
 import Auth from "../pages/auth/Auth";
 import MainLayout from "../components/layout/MainLayout";
@@ -10,19 +10,16 @@ import Calls from "../pages/calls/Calls";
 import Grok from "../pages/grok/Grok";
 import History from "../pages/history/History";
 import Profile from "../pages/profile/Profile";
-import Foryou from "../pages/home/components/foryou/Foryou";
-import Following from "../pages/home/components/following/Following";
+import Foryou from "../pages/home/pages/foryou/Foryou";
+import Following from "../pages/home/pages/following/Following";
 
 export default function AppRouter() {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />}>
-          <Route path="foryou" element={<Foryou />} />
-          <Route path="following" element={<Following />} />
-          <Route />
-        </Route>
+        <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<Home />}>
+          <Route index element={<Navigate to="foryou" replace />} />
           <Route path="foryou" element={<Foryou />} />
           <Route path="following" element={<Following />} />
         </Route>
