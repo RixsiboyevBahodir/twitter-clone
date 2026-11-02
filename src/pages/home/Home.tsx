@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <div>
-      <nav className="flex border-b">
+      <nav className="flex border-b sticky top-0 bg-[#ffffffd7] backdrop-blur-sm">
         <NavLink to="foryou" end className={tabClassName}>
           For you
         </NavLink>
@@ -32,6 +32,9 @@ export default function Home() {
           Post
         </button>
       </div>
+      <p className="text-center text-blue-500 py-4 border-b font-normal">
+        Show 360 posts
+      </p>
       <main>
         <Outlet />
       </main>
