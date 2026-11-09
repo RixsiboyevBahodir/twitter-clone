@@ -17,6 +17,8 @@ import Trending from "../pages/explore/pages/Trending";
 import News from "../pages/explore/pages/News";
 import Sports from "../pages/explore/pages/Sports";
 import Entertainment from "../pages/explore/pages/Entertainment";
+import Login from "../pages/auth/login/Login";
+import CreateUser from "../pages/auth/register/CreateUser";
 
 export default function AppRouter() {
   return (
@@ -46,7 +48,11 @@ export default function AppRouter() {
         <Route path="/calls" element={<Calls />} />
         <Route path="/grok" element={<Grok />} />
       </Route>
-      <Route path="/auth" element={<Auth />} />
+      <Route path="/auth" element={<Auth />}>
+        <Route index element={<Navigate to="login" replace />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<CreateUser />} />
+      </Route>
     </Routes>
   );
 }
