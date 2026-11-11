@@ -5,11 +5,22 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
-import { Button, buttonVariants } from "../../../components/ui/button";
+import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { Link } from "react-router-dom";
+import { LuMoveRight } from "react-icons/lu";
+import { useLoginMutation } from "../../../apiSlice/loginApi";
+
+interface IUser {
+  username: string;
+  password: string;
+}
 
 export default function Login() {
+  const [login, isLodading] = useLoginMutation();
+
+  console.log(isLodading);
+
   return (
     <Card className="shadow-md max-w-125 w-full">
       <CardHeader>
@@ -22,10 +33,15 @@ export default function Login() {
           onSubmit={(event) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
-            const user = formData.get("user");
-            const password = formData.get("password");
+            const username = formData.get("user") as string;
+            const password = formData.get("password") as string;
 
-            console.log({ user, password });
+            const user: IUser = {
+              username,
+              password,
+            };
+            login(user);
+            event.currentTarget.reset();
           }}
         >
           <div className="space-y-2">
@@ -54,17 +70,17 @@ export default function Login() {
               className="h-10 rounded-xl px-3"
             />
           </div>
-          <Button type="submit" className="cursor-pointer">
-            Login
-          </Button>
-          <Link
-            to="/auth/register"
-            className={buttonVariants({ className: "cursor-pointer" })}
-          >
-            Create account
-          </Link>
+          <div className="flex gap-4">
+            <Button type="submit" className="cursor-pointer">
+              Login
+            </Button>
+            <Link to="/auth/register" className="flex items-center gap-3">
+              Create account
+              <LuMoveRight />
+            </Link>
+          </div>
         </form>
-      </CardContent>  
+      </CardContent>
     </Card>
   );
 }
