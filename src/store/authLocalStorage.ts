@@ -2,16 +2,21 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface IUser {
-  created_at:string
-  id:number
+  created_at: string;
+  id: number;
   phone: string;
   username: string;
 }
 
+interface IToken {
+  access_token: string;
+  refresh_token: string;
+}
+
 interface IAuthLocalData {
-  token: string | null;
+  token: IToken | null;
   user: IUser | null;
-  setCredentials: (data: { token: string; user: IUser }) => void;
+  setCredentials: (data: { token: IToken; user: IUser }) => void;
   logout: () => void;
 }
 
@@ -27,4 +32,4 @@ const useAuthStore = create<IAuthLocalData>()(
   ),
 );
 
-export default useAuthStore
+export default useAuthStore;

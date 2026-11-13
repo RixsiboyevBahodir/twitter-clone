@@ -19,10 +19,12 @@ import Sports from "../pages/explore/pages/Sports";
 import Entertainment from "../pages/explore/pages/Entertainment";
 import Login from "../pages/auth/login/Login";
 import CreateUser from "../pages/auth/register/CreateUser";
+import NotFound from "../pages/notFound/NotFound";
 
 export default function AppRouter() {
   return (
     <Routes>
+      <Route path="*" element={<NotFound />} />
       <Route element={<MainLayout />}>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<Home />}>

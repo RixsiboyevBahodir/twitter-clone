@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { LuMoveLeft } from "react-icons/lu";
 import { Toast } from "@base-ui/react/toast";
 import { useRegisterMutation } from "../../../apiSlice/registerApi";
-import useAuthStore from "../../../store/authStore";
+import useAuthStore from "../../../store/authLocalStorage";
 
 interface ICreateUser {
   phone: string;
@@ -22,7 +22,6 @@ export default function CreateUser() {
   const [register, { isLoading: isLoading }] = useRegisterMutation();
   const toastManager = Toast.useToastManager();
   const { setCredentials } = useAuthStore();
-
 
   const create = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -60,7 +59,10 @@ export default function CreateUser() {
       const response = await register(createUser).unwrap();
 
       setCredentials({
-        token: response.access_token,
+        token: {
+          access_token: response.access_token,
+          refresh_token: response.refresh_token,
+        },
         user: {
           created_at: response.user.created_at,
           id: response.user.id,

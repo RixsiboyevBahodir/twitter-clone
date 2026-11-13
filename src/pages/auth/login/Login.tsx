@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { LuMoveRight } from "react-icons/lu";
 import { useLoginMutation } from "../../../apiSlice/loginApi";
 import { Toast } from "@base-ui/react/toast";
-import useAuthStore from "../../../store/authStore";
+import useAuthStore from "../../../store/authLocalStorage";
 
 interface IUser {
   username: string;
@@ -48,7 +48,10 @@ export default function Login() {
       const loginResponse = await loginMutation(user).unwrap();
 
       setCredentials({
-        token: loginResponse.access_token,
+        token: {
+          access_token: loginResponse.access_token,
+          refresh_token: loginResponse.refresh_token,
+        },
         user: {
           created_at: loginResponse.user.created_at,
           id: loginResponse.user.id,
