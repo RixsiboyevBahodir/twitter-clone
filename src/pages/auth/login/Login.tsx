@@ -10,6 +10,8 @@ import { Input } from "../../../components/ui/input";
 import { Link } from "react-router-dom";
 import { LuMoveRight } from "react-icons/lu";
 import { useLoginMutation } from "../../../apiSlice/loginApi";
+import { Toast } from "@base-ui/react/toast";
+import useAuthStore from "../../../store/authStore";
 
 interface IUser {
   username: string;
@@ -17,9 +19,58 @@ interface IUser {
 }
 
 export default function Login() {
-  const [login, isLodading] = useLoginMutation();
+  const [loginMutation, isLodading] = useLoginMutation();
+  const toastManager = Toast.useToastManager();
+  const { setCredentials } = useAuthStore();
 
-  console.log(isLodading);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const username = formData.get("user") as string;
+    const password = formData.get("password") as string;
+
+    if (!username || !password) {
+      toastManager.add({
+        title: "Xatolik",
+        type: "error",
+        description: "Barcha maydonlarni to'ldiring.",
+      });
+      return;
+    }
+
+    const user: IUser = {
+      username,
+      password,
+    };
+
+    try {
+      const loginResponse = await loginMutation(user).unwrap();
+
+      setCredentials({
+        token: loginResponse.access_token,
+        user: {
+          created_at: loginResponse.user.created_at,
+          id: loginResponse.user.id,
+          phone: loginResponse.user.phone,
+          username: loginResponse.user.username,
+        },
+      });
+
+      form.reset();
+      toastManager.add({
+        title: "Tizimga kirdingiz!",
+        type: "success",
+        description: "Hisobingiz muvaffaqiyatli yaratildi.",
+      });
+    } catch (error) {
+      toastManager.add({
+        title: "Xatolik yuz berdi",
+        type: "error",
+        description: "username yoke password xato",
+      });
+    }
+  };
 
   return (
     <Card className="shadow-md max-w-125 w-full">
@@ -28,22 +79,7 @@ export default function Login() {
         <CardDescription>user and password</CardDescription>
       </CardHeader>
       <CardContent className="pb-4">
-        <form
-          className="space-y-6"
-          onSubmit={(event) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const username = formData.get("user") as string;
-            const password = formData.get("password") as string;
-
-            const user: IUser = {
-              username,
-              password,
-            };
-            login(user);
-            event.currentTarget.reset();
-          }}
-        >
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <label htmlFor="user" className="block font-medium">
               User name

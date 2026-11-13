@@ -2,10 +2,8 @@ import * as React from "react"
 import { Toast as ToastPrimitive } from "@base-ui/react/toast"
 import { cn } from "cn"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "./button"
 import { XIcon, CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon } from "lucide-react"
-
-const toast = ToastPrimitive.createToastManager()
 
 function ToastProvider({ ...props }: ToastPrimitive.Provider.Props) {
   return <ToastPrimitive.Provider {...props} />
@@ -197,7 +195,7 @@ function ToastList() {
 
 function Toaster({
   children,
-  toastManager = toast,
+  toastManager = ToastPrimitive.createToastManager(),
   ...props
 }: ToastPrimitive.Provider.Props) {
   return (
@@ -212,9 +210,6 @@ function Toaster({
   )
 }
 
-const createToastManager = ToastPrimitive.createToastManager
-const useToastManager = ToastPrimitive.useToastManager
-
 export {
   Toaster,
   Toast,
@@ -226,7 +221,4 @@ export {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-  createToastManager,
-  toast,
-  useToastManager,
 }
