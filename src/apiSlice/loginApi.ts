@@ -10,9 +10,11 @@ interface LoginResponse {
     id: number;
     phone: string;
     username: string;
+    name: string;
     bio: string | null;
     avatar: string | null;
     created_at: string;
+    is_verified: boolean;
   };
   access_token: string;
   refresh_token: string;

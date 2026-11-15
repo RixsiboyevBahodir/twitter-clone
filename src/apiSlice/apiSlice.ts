@@ -2,11 +2,15 @@ import {
   createApi,
   fetchBaseQuery,
   type BaseQueryFn,
-} from "@reduxjs/toolkit/query";
+  type FetchArgs,
+  type FetchBaseQueryError,
+} from "@reduxjs/toolkit/query/react";
 import useAuthStore from "../store/authLocalStorage";
 
+const BASE_URL = "https://twitter-clone-backend-mauve.vercel.app/api";
+
 const rawBaseQuery = fetchBaseQuery({
-  baseUrl: "https://twitter-clone-backend-mauve.vercel.app/api",
+  baseUrl: BASE_URL,
   prepareHeaders: (headers) => {
     const token = useAuthStore.getState().token;
     if (token?.access_token) {
@@ -16,11 +20,11 @@ const rawBaseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithReauth: BaseQueryFn<any> = async (
-  args,
-  api,
-  extraOptions,
-) => {
+const baseQueryWithReauth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
   let result = await rawBaseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
@@ -38,10 +42,8 @@ const baseQueryWithReauth: BaseQueryFn<any> = async (
       );
 
       if (refreshResult.data) {
-        const newAccessToken = (
-          refreshResult.data as { accaccess_token: string }
-        ).accaccess_token;
-
+        const newAccessToken = (refreshResult.data as { access_token: string })
+          .access_token;
         const currentUser = useAuthStore.getState().user;
 
         useAuthStore.getState().setCredentials({

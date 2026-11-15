@@ -1,0 +1,25 @@
+import { apiSlice } from "./apiSlice";
+
+interface IResponse {
+  id: number;
+  phone: string;
+  username: string;
+  name: string;
+  bio: string | null;
+  avatar: string | null;
+  created_at: string;
+  is_verified: boolean;
+  followers_count: number;
+  following_count: number;
+  posts_count: number;
+}
+
+const profileApi = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    getMyProfile: builder.query<IResponse, void>({
+      query: () => "/users/me",
+    }),
+  }),
+});
+
+export const { useGetMyProfileQuery } = profileApi;

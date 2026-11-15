@@ -47,6 +47,8 @@ export default function Login() {
     try {
       const loginResponse = await loginMutation(user).unwrap();
 
+      console.log(loginResponse)
+
       setCredentials({
         token: {
           access_token: loginResponse.access_token,
