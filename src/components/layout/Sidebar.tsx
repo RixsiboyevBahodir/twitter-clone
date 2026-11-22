@@ -12,6 +12,7 @@ import { CgMoreO } from "react-icons/cg";
 import { FaUserCircle } from "react-icons/fa";
 import { BsThreeDots } from "react-icons/bs";
 import { NavLink, useLocation } from "react-router-dom";
+import CreatePostModal from "../post/CreatePostModal";
 
 export default function Sidebar() {
   const location = useLocation();
@@ -69,9 +70,7 @@ export default function Sidebar() {
           <p className="font-medium text-[17px]">More</p>
         </span>
       </div>
-      <button className="w-full bg-black py-3 text-white rounded-3xl cursor-pointer text-[16px] shadow-gray-500 shadow-md">
-        Post
-      </button>
+      <CreatePostModal />
       <div className="flex items-center gap-3 absolute bottom-5">
         <FaUserCircle className="text-4xl" />
         <span>
