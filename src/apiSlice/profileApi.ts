@@ -18,6 +18,7 @@ const profileApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getMyProfile: builder.query<IResponse, void>({
       query: () => "/users/me",
+      providesTags: ["user"],
     }),
   }),
 });

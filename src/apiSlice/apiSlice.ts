@@ -41,17 +41,26 @@ const baseQueryWithReauth: BaseQueryFn<
         extraOptions,
       );
 
-      if (refreshResult.data) {
-        const newAccessToken = (refreshResult.data as { access_token: string })
-          .access_token;
-        const currentUser = useAuthStore.getState().user;
-
+      const currentUser = useAuthStore.getState().user;
+      const refreshData = refreshResult.data;
+      if (
+        typeof refreshData === "object" &&
+        refreshData !== null &&
+        "access_token" in refreshData &&
+        typeof refreshData.access_token === "string" &&
+        currentUser
+      ) {
+        const newRefreshToken =
+          "refresh_token" in refreshData &&
+          typeof refreshData.refresh_token === "string"
+            ? refreshData.refresh_token
+            : currentRefreshToken;
         useAuthStore.getState().setCredentials({
           token: {
-            access_token: newAccessToken,
-            refresh_token: currentRefreshToken,
+            access_token: refreshData.access_token,
+            refresh_token: newRefreshToken,
           },
-          user: currentUser!,
+          user: currentUser,
         });
 
         result = await rawBaseQuery(args, api, extraOptions);

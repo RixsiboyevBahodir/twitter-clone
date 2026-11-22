@@ -31,8 +31,6 @@ export default function Profile() {
   if (isLoading) return <div>Loading profile...</div>;
   if (isError) return <div>Failed to load profile.</div>;
 
-  console.log(data);
-
   let createdData = "";
   if (data?.created_at) {
     const createdAt = new Date(data.created_at);
@@ -45,12 +43,15 @@ export default function Profile() {
   return (
     <div>
       <div className="py-2 pl-10">
-        <p className="text-xl font-semibold">{data?.name}</p>
+        <div className="flex items-center gap-2">
+          <p className="text-xl font-semibold">{data?.name}</p>
+          { data?.is_verified ? <MdVerified className="text-blue-500 text-xl"/> : ""}
+        </div>
         <p className="text-gray-600 text-[15px]">{data?.posts_count} posts</p>
       </div>
       <div className="bg-gray-400 w-full h-50 relative p-4">
         <FaUserCircle className="text-[150px]  text-gray-700 border-3 absolute -bottom-15 border-white rounded-[50%]" />
-        <ProfileModal />
+        <ProfileModal profile={data} />
       </div>
       <div className="p-4">
         <div className="pt-15 flex items-center gap-7">
