@@ -12,6 +12,7 @@ import {
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import { useCreatePostMutation } from "../../apiSlice/createPostApi";
+import { Toast } from "@base-ui/react";
 
 function isValidMediaUrl(value: string) {
   try {
@@ -36,13 +37,15 @@ export default function CreatePostModal() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const mediaUrlInputRef = useRef<HTMLInputElement>(null);
   const mediaUrlValue = mediaUrl.trim();
-  const hasValidMediaUrl =
-    !mediaUrlValue || isValidMediaUrl(mediaUrlValue);
+  const hasValidMediaUrl = !mediaUrlValue || isValidMediaUrl(mediaUrlValue);
   const canPost =
-    (content.trim().length > 0 || mediaUrlValue.length > 0) &&
-    hasValidMediaUrl;
+    (content.trim().length > 0 || mediaUrlValue.length > 0) && hasValidMediaUrl;
 
-  const [createPost] = useCreatePostMutation();
+  const [isOpen, setIsOpen] = useState(false);
+  const [createPost, { isLoading }] = useCreatePostMutation();
+  const toastManager = Toast.useToastManager();
+
+  console.log(createPost)
 
   const handlePost = async () => {
     if (!canPost) return;
@@ -60,8 +63,22 @@ export default function CreatePostModal() {
 
     try {
       await createPost(postPayload).unwrap();
+      setContent("");
+      setMediaUrl("");
+      setMediaError(null);
+      setIsEmojiPickerOpen(false);
+      setIsOpen(false);
+      toastManager.add({
+        title: "create post",
+        type: "success",
+      });
     } catch (error) {
       console.log(error);
+
+      toastManager.add({
+        title: "error is create",
+        type: "error",
+      });
     }
   };
 
@@ -92,7 +109,7 @@ export default function CreatePostModal() {
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger
         render={
           <Button className="w-full rounded-full bg-black py-6 text-base font-bold text-white hover:bg-black/80">
@@ -228,7 +245,7 @@ export default function CreatePostModal() {
           </div>
           <Button
             type="button"
-            disabled={!canPost}
+            disabled={isLoading || !canPost}
             onClick={handlePost}
             className={`px-5 font-bold text-white ${
               canPost

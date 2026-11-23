@@ -20,6 +20,8 @@ import Entertainment from "../pages/explore/pages/Entertainment";
 import Login from "../pages/auth/login/Login";
 import CreateUser from "../pages/auth/register/CreateUser";
 import NotFound from "../pages/notFound/NotFound";
+import Posts from "../pages/profile/pages/Posts";
+import Reposts from "../pages/profile/pages/Reposts";
 
 export default function AppRouter() {
   return (
@@ -43,7 +45,11 @@ export default function AppRouter() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/follow" element={<Follow />} />
         <Route path="/history" element={<History />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile />}>
+          <Route index element={<Navigate to="posts" replace />} />
+          <Route path="posts" element={<Posts />} />
+          <Route path="reposts" element={<Reposts />} />
+        </Route>
       </Route>
       <Route element={<MainLayout showRightSidebar={false} />}>
         <Route path="/chat" element={<Chat />} />

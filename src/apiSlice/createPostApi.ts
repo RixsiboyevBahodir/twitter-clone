@@ -15,6 +15,7 @@ const createPostApi = apiSlice.injectEndpoints({
         method: "POST",
         body: post,
       }),
+      invalidatesTags: ["post", "user"],
     }),
   }),
 });

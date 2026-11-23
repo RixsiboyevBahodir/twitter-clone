@@ -29,6 +29,7 @@ const postsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getPosts: builder.query<PostResponse[], void>({
       query: () => "posts",
+      providesTags: ["post"],
     }),
   }),
 });
