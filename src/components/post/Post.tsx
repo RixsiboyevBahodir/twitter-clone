@@ -1,10 +1,10 @@
 import { FaRegBookmark, FaRegComment, FaUserCircle } from "react-icons/fa";
 import { FiHeart } from "react-icons/fi";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { LuRepeat2 } from "react-icons/lu";
 import { MdBarChart, MdVerified } from "react-icons/md";
 import { RiShare2Line } from "react-icons/ri";
 import type { PostResponse } from "../../apiSlice/postsApi";
+import PostDropdownMenu from "./PostDropdownMenu";
 
 interface IPostProps {
   post: PostResponse;
@@ -12,8 +12,6 @@ interface IPostProps {
 
 export default function Post({ post }: IPostProps) {
   const isVideo = post.media_type?.startsWith("video") ?? false;
-
-  console.log(post);
 
   return (
     <div className="flex gap-2 p-4 border-b hover:bg-gray-50 transition-all duration-200 cursor-pointer">
@@ -30,14 +28,12 @@ export default function Post({ post }: IPostProps) {
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-1">
             <p className="text-[14px] font-semibold">{post.username}</p>
-            {post?.created_at ? (
+            {post.is_verified ? (
               <MdVerified className="text-blue-500 text-[15px]" />
-            ) : (
-              ""
-            )}
+            ) : null}
             <p className="font-light text-[13px]">@{post.username}</p>
           </div>
-          <HiOutlineDotsHorizontal className="text-xl text-gray-500 cursor-pointer" />
+          <PostDropdownMenu id={post.id} />
         </div>
         <p className="text-[14px] text-[#444] font-redaction whitespace-pre-line">
           {post.text}

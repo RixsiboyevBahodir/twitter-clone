@@ -16,6 +16,7 @@ export interface PostResponse {
   original_post_created_at: string;
   username: string;
   avatar: string | null;
+  is_verified?: boolean;
   reposted_by_user_id: number | null;
   reposted_by_username: string | null;
   reposted_by_avatar: string | null;

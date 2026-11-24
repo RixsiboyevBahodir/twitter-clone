@@ -2,6 +2,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { Input } from "../../components/ui/input";
 import { FaUserCircle } from "react-icons/fa";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
+import { useGetPostsQuery } from "../../apiSlice/postsApi";
 
 export default function Home() {
   const tabClassName = ({ isActive }: { isActive: boolean }) =>
@@ -10,7 +11,7 @@ export default function Home() {
         ? "border-sky-500 text-black"
         : "border-transparent text-gray-500 hover:bg-gray-100"
     }`;
-
+  const { data: posts } = useGetPostsQuery();
   return (
     <div>
       <nav className="flex border-b sticky top-0 bg-[#ffffffd7] backdrop-blur-sm">
@@ -33,7 +34,7 @@ export default function Home() {
         </button>
       </div>
       <p className="text-center text-blue-500 py-4 border-b font-normal">
-        Show 360 posts
+        Show {posts?.length} posts
       </p>
       <main>
         <Outlet />

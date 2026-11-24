@@ -45,8 +45,6 @@ export default function CreatePostModal() {
   const [createPost, { isLoading }] = useCreatePostMutation();
   const toastManager = Toast.useToastManager();
 
-  console.log(createPost)
-
   const handlePost = async () => {
     if (!canPost) return;
 
