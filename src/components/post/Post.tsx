@@ -5,6 +5,8 @@ import { MdBarChart, MdVerified } from "react-icons/md";
 import { RiShare2Line } from "react-icons/ri";
 import type { PostResponse } from "../../apiSlice/postsApi";
 import PostDropdownMenu from "./PostDropdownMenu";
+import { usePostsUnlikeMutation } from "../../apiSlice/postsUnlikeApi";
+import { usePostsLikesGetQuery } from "../../apiSlice/postsLikesGetApi";
 
 interface IPostProps {
   post: PostResponse;
@@ -12,6 +14,13 @@ interface IPostProps {
 
 export default function Post({ post }: IPostProps) {
   const isVideo = post.media_type?.startsWith("video") ?? false;
+
+  const [postUnlikeId, { isLoading: isUnlikeing }] = usePostsUnlikeMutation();
+  const [refresh] = usePostsLikesGetQuery(id);
+
+  const hendleLike = (id) => {
+
+  };
 
   return (
     <div className="flex gap-2 p-4 border-b hover:bg-gray-50 transition-all duration-200 cursor-pointer">
@@ -52,28 +61,35 @@ export default function Post({ post }: IPostProps) {
               className="mt-2 w-full rounded-xl border-2 border-gray-500 object-cover"
             />
           ))}
-        <ul className="flex justify-between pt-3 text-[#444]">
-          <li className="flex items-center gap-2 hover:text-blue-500 cursor-pointer transition-all duration-200">
+        <div className="flex justify-between pt-3 text-[#444]">
+          <button className="flex items-center gap-2 hover:text-blue-500 cursor-pointer transition-all duration-200">
             <FaRegComment className="text-[16px]" />
-            <p className="text-[13px]">{post.comments_count}</p>
-          </li>
-          <li className="flex items-center gap-2 hover:text-green-500 cursor-pointer transition-all duration-200">
+            <span className="text-[13px]">{post.comments_count}</span>
+          </button>
+          <button className="flex items-center gap-2 hover:text-green-500 cursor-pointer transition-all duration-200">
             <LuRepeat2 className="text-[19px]" />
-            <p className="text-[13px]">{post.reposts_count}</p>
-          </li>
-          <li className="flex items-center gap-2 hover:text-red-500 cursor-pointer transition-all duration-200">
+            <span className="text-[13px]">{post.reposts_count}</span>
+          </button>
+          <button
+            className="flex items-center gap-2 hover:text-red-500 cursor-pointer transition-all duration-200"
+            onClick={() => hendleLike(post.id)}
+          >
             <FiHeart className="text-[16px]" />
-            <p className="text-[13px]">{post.likes_count}</p>
-          </li>
-          <li className="flex items-center gap-2 hover:text-blue-500 cursor-pointer transition-all duration-200">
+            <span className="text-[13px]">{post.likes_count}</span>
+          </button>
+          <button className="flex items-center gap-2 hover:text-blue-500 cursor-pointer transition-all duration-200">
             <MdBarChart className="text-[17px]" />
-            <p className="text-[13px]">{post.views_count}</p>
-          </li>
-          <li className="flex items-center gap-2">
-            <FaRegBookmark className="text-[16px] hover:text-blue-500 cursor-pointer transition-all duration-200" />
-            <RiShare2Line className="text-[18px] hover:text-blue-500 cursor-pointer transition-all duration-200" />
-          </li>
-        </ul>
+            <span className="text-[13px]">{post.views_count}</span>
+          </button>
+          <div className="flex items-center gap-2">
+            <button className="hover:text-blue-500 cursor-pointer transition-all duration-200">
+              <FaRegBookmark className="text-[16px]" />
+            </button>
+            <button className="hover:text-blue-500 cursor-pointer transition-all duration-200">
+              <RiShare2Line className="text-[18px]" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

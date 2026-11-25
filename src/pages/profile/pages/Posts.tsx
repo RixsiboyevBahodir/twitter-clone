@@ -19,8 +19,6 @@ export default function Posts() {
       ? [data?.posts]
       : [];
 
-  console.log(data);
-
   return (
     <div>
       {posts?.map((post) => (

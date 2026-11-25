@@ -41,6 +41,13 @@ export default function Profile() {
     }
   }
 
+  const tabClassName = ({ isActive }: { isActive: boolean }) =>
+    `flex-1 border-b-2 px-4 py-4 text-center font-medium transition-colors ${
+      isActive
+        ? "border-sky-500 text-black"
+        : "border-transparent text-gray-500 hover:bg-gray-100"
+    }`;
+
   return (
     <div>
       <div>
@@ -84,10 +91,10 @@ export default function Profile() {
         </div>
       </div>
       <div className="flex items-center justify-around">
-        <NavLink to={"/profile/posts"} end>
+        <NavLink to={"/profile/posts"} end className={tabClassName}>
           Posts
         </NavLink>
-        <NavLink to={"/profile/reposts"} end>
+        <NavLink to={"/profile/reposts"} end className={tabClassName}>
           Reposts
         </NavLink>
       </div>
