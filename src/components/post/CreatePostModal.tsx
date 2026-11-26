@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
-import { useCreatePostMutation } from "../../apiSlice/createPostApi";
+import { useCreatePostMutation } from "../../apiSlice/posts/createPostApi";
 import { Toast } from "@base-ui/react";
 
 function isValidMediaUrl(value: string) {

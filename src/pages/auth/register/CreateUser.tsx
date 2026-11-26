@@ -9,7 +9,7 @@ import { Input } from "../../../components/ui/input";
 import { Link } from "react-router-dom";
 import { LuMoveLeft } from "react-icons/lu";
 import { Toast } from "@base-ui/react/toast";
-import { useRegisterMutation } from "../../../apiSlice/registerApi";
+import { useRegisterMutation } from "../../../apiSlice/auth/registerApi";
 import useAuthStore from "../../../store/authLocalStorage";
 
 interface ICreateUser {

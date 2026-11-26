@@ -1,11 +1,12 @@
-import { apiSlice } from "./apiSlice";
+import { apiSlice } from "../apiSlice";
 
-interface LoginRequest {
+interface RegisterRequest {
+  phone: string;
   username: string;
   password: string;
 }
 
-interface LoginResponse {
+interface RegisterResponse {
   user: {
     id: number;
     phone: string;
@@ -20,11 +21,11 @@ interface LoginResponse {
   refresh_token: string;
 }
 
-export const loginApi = apiSlice.injectEndpoints({
+export const registerApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<LoginResponse, LoginRequest>({
+    register: builder.mutation<RegisterResponse, RegisterRequest>({
       query: (credentials) => ({
-        url: "/auth/login",
+        url: "/auth/register",
         method: "POST",
         body: credentials,
       }),
@@ -32,4 +33,4 @@ export const loginApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation } = loginApi;
+export const { useRegisterMutation } = registerApi;

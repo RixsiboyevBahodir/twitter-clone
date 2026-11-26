@@ -1,5 +1,5 @@
-import { apiSlice } from "./apiSlice";
-import type { PostResponse } from "./postsApi";
+import { apiSlice } from "../apiSlice";
+import type { PostResponse } from "../posts/postsApi";
 
 interface IResponse {
   id: number;
@@ -13,7 +13,7 @@ interface IResponse {
   followers_count: number;
   following_count: number;
   posts_count: number;
-  posts: PostResponse;
+  posts: PostResponse | PostResponse[];
 }
 
 const profileApi = apiSlice.injectEndpoints({

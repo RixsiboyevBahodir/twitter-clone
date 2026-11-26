@@ -1,7 +1,7 @@
 import { skipToken } from "@reduxjs/toolkit/query";
-import { useGetMyProfileQuery } from "../../../apiSlice/profileApi";
+import { useGetMyProfileQuery } from "../../../apiSlice/user/profileApi";
 import useAuthStore from "../../../store/authLocalStorage";
-import type { PostResponse } from "../../../apiSlice/postsApi";
+import type { PostResponse } from "../../../apiSlice/posts/postsApi";
 import Post from "../../../components/post/Post";
 
 export default function Posts() {

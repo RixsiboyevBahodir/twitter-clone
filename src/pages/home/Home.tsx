@@ -2,7 +2,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { Input } from "../../components/ui/input";
 import { FaUserCircle } from "react-icons/fa";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-import { useGetPostsQuery } from "../../apiSlice/postsApi";
+import { useGetPostsQuery } from "../../apiSlice/posts/postsApi";
 
 export default function Home() {
   const tabClassName = ({ isActive }: { isActive: boolean }) =>

@@ -1,8 +1,8 @@
-import { apiSlice } from "./apiSlice";
+import { apiSlice } from "../apiSlice";
 
 const deletePostApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    deletePost: builder.mutation({
+    deletePost: builder.mutation<unknown, number>({
       query: (id: number) => ({
         url: `/posts/${id}`,
         method: "DELETE",

@@ -1,5 +1,5 @@
 import { skipToken } from "@reduxjs/toolkit/query";
-import { useGetMyProfileQuery } from "../../apiSlice/profileApi";
+import { useGetMyProfileQuery } from "../../apiSlice/user/profileApi";
 import useAuthStore from "../../store/authLocalStorage";
 import { FaUserCircle } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";

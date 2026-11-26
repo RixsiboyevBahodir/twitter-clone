@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useUpdateUserInfoMutation } from "../../../apiSlice/userInfoChangeApi";
+import { useUpdateUserInfoMutation } from "../../../apiSlice/user/userInfoChangeApi";
 import {
   AlertDialog,
   AlertDialogAction,

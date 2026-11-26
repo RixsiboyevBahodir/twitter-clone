@@ -9,7 +9,7 @@ import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { Link } from "react-router-dom";
 import { LuMoveRight } from "react-icons/lu";
-import { useLoginMutation } from "../../../apiSlice/loginApi";
+import { useLoginMutation } from "../../../apiSlice/auth/loginApi";
 import { Toast } from "@base-ui/react/toast";
 import useAuthStore from "../../../store/authLocalStorage";
 

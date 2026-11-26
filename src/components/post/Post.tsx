@@ -1,12 +1,19 @@
-import { FaRegBookmark, FaRegComment, FaUserCircle } from "react-icons/fa";
+import {
+  FaHeart,
+  FaRegBookmark,
+  FaRegComment,
+  FaUserCircle,
+} from "react-icons/fa";
 import { FiHeart } from "react-icons/fi";
 import { LuRepeat2 } from "react-icons/lu";
 import { MdBarChart, MdVerified } from "react-icons/md";
 import { RiShare2Line } from "react-icons/ri";
-import type { PostResponse } from "../../apiSlice/postsApi";
+import type { PostResponse } from "../../apiSlice/posts/postsApi";
 import PostDropdownMenu from "./PostDropdownMenu";
-import { usePostsUnlikeMutation } from "../../apiSlice/postsUnlikeApi";
-import { usePostsLikesGetQuery } from "../../apiSlice/postsLikesGetApi";
+import { usePostsUnlikeMutation } from "../../apiSlice/posts/postsUnlikeApi";
+import { usePostsLikeMutation } from "../../apiSlice/posts/postsLikeApi";
+import { usePostsLikesGetQuery } from "../../apiSlice/posts/postsLikesGetApi";
+import useAuthStore from "../../store/authLocalStorage";
 
 interface IPostProps {
   post: PostResponse;
@@ -14,12 +21,30 @@ interface IPostProps {
 
 export default function Post({ post }: IPostProps) {
   const isVideo = post.media_type?.startsWith("video") ?? false;
+  const username = useAuthStore((state) => state.user?.username);
 
-  const [postUnlikeId, { isLoading: isUnlikeing }] = usePostsUnlikeMutation();
-  const [refresh] = usePostsLikesGetQuery(id);
+  const [postUnlikeId, { isLoading: isUnliking }] = usePostsUnlikeMutation();
+  const [postLikeId, { isLoading: isLiking }] = usePostsLikeMutation();
+  const {
+    data: likes,
+    isFetching: isFetchingLikes,
+    refetch,
+  } = usePostsLikesGetQuery(post.id);
+  const isLiked = username
+    ? (likes?.usernames.includes(username) ?? false)
+    : false;
 
-  const hendleLike = (id) => {
-
+  const handleLike = async () => {
+    try {
+      if (isLiked) {
+        await postUnlikeId(post.id).unwrap();
+      } else {
+        await postLikeId(post.id).unwrap();
+      }
+      await refetch();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -36,7 +61,7 @@ export default function Post({ post }: IPostProps) {
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-1">
-            <p className="text-[14px] font-semibold">{post.username}</p>
+            <p className="text-[14px] font-semibold">{post.name}</p>
             {post.is_verified ? (
               <MdVerified className="text-blue-500 text-[15px]" />
             ) : null}
@@ -72,9 +97,14 @@ export default function Post({ post }: IPostProps) {
           </button>
           <button
             className="flex items-center gap-2 hover:text-red-500 cursor-pointer transition-all duration-200"
-            onClick={() => hendleLike(post.id)}
+            onClick={handleLike}
+            disabled={!username || isFetchingLikes || isUnliking || isLiking}
           >
-            <FiHeart className="text-[16px]" />
+            {isLiked ? (
+              <FaHeart className="text-red-600 text-[16px]" />
+            ) : (
+              <FiHeart className="text-[16px]" />
+            )}
             <span className="text-[13px]">{post.likes_count}</span>
           </button>
           <button className="flex items-center gap-2 hover:text-blue-500 cursor-pointer transition-all duration-200">

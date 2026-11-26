@@ -1,8 +1,8 @@
-﻿import { apiSlice } from "./apiSlice";
+﻿import { apiSlice } from "../apiSlice";
 
 const postsLikeApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    postsLike: builder.mutation({
+    postsLike: builder.mutation<unknown, number>({
       query: (id) => ({
         url: `/posts/${id}/like`,
         method: "POST",

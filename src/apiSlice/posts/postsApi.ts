@@ -1,10 +1,11 @@
-import { apiSlice } from "./apiSlice";
+import { apiSlice } from "../apiSlice";
 
 export interface PostResponse {
   entry_type: string;
   id: number;
   repost_id: number | null;
   user_id: number;
+  name:string
   text: string;
   media_url: string | null;
   media_type: string | null;

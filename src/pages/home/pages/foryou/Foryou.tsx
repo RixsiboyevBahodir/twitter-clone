@@ -1,4 +1,4 @@
-import { useGetPostsQuery } from "../../../../apiSlice/postsApi";
+import { useGetPostsQuery } from "../../../../apiSlice/posts/postsApi";
 import Post from "../../../../components/post/Post";
 
 export default function Foryou() {

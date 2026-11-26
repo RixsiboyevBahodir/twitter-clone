@@ -1,7 +1,7 @@
 import { Toast } from "@base-ui/react";
 import { TrashIcon } from "lucide-react";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { useDeletePostMutation } from "../../apiSlice/deletePostApi";
+import { useDeletePostMutation } from "../../apiSlice/posts/deletePostApi";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
