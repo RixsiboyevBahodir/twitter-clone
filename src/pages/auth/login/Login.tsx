@@ -10,13 +10,9 @@ import { Input } from "../../../components/ui/input";
 import { Link } from "react-router-dom";
 import { LuMoveRight } from "react-icons/lu";
 import { useLoginMutation } from "../../../apiSlice/auth/loginApi";
+import type { LoginCredentials } from "../../../type/userTypes";
 import { Toast } from "@base-ui/react/toast";
 import useAuthStore from "../../../store/authLocalStorage";
-
-interface IUser {
-  username: string;
-  password: string;
-}
 
 export default function Login() {
   const [loginMutation, isLodading] = useLoginMutation();
@@ -39,7 +35,7 @@ export default function Login() {
       return;
     }
 
-    const user: IUser = {
+    const user: LoginCredentials = {
       username,
       password,
     };

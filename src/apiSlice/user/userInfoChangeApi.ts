@@ -1,12 +1,5 @@
 import { apiSlice } from "../apiSlice";
-
-interface UpdateUserInfoRequest {
-  name?: string;
-  username?: string;
-  bio?: string | null;
-  phone?: string;
-  is_verified?: boolean;
-}
+import type { UpdateUserInfoRequest } from "../../type/userTypes";
 
 const userInfoChangeApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -16,7 +9,7 @@ const userInfoChangeApi = apiSlice.injectEndpoints({
         method: "PATCH",
         body: updataInfo,
       }),
-      invalidatesTags: ["user"],
+      invalidatesTags: ["user", "post"],
     }),
   }),
 });

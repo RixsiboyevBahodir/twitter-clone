@@ -8,15 +8,19 @@ import { FiHeart } from "react-icons/fi";
 import { LuRepeat2 } from "react-icons/lu";
 import { MdBarChart, MdVerified } from "react-icons/md";
 import { RiShare2Line } from "react-icons/ri";
-import type { PostResponse } from "../../apiSlice/posts/postsApi";
+import type { PostCardData } from "../../apiSlice/posts/postsApi";
 import PostDropdownMenu from "./PostDropdownMenu";
 import { usePostsUnlikeMutation } from "../../apiSlice/posts/postsUnlikeApi";
 import { usePostsLikeMutation } from "../../apiSlice/posts/postsLikeApi";
 import { usePostsLikesGetQuery } from "../../apiSlice/posts/postsLikesGetApi";
 import useAuthStore from "../../store/authLocalStorage";
+import { usePostsRepostGetQuery } from "../../apiSlice/posts/postsRepostGetApi";
+import { usePostsRepostMutation } from "../../apiSlice/posts/postsRepostApi";
+import { usePostsUnrepostMutation } from "../../apiSlice/posts/postsUnrepostApi";
+import { BiRepeat } from "react-icons/bi";
 
 interface IPostProps {
-  post: PostResponse;
+  post: PostCardData;
 }
 
 export default function Post({ post }: IPostProps) {
@@ -28,10 +32,22 @@ export default function Post({ post }: IPostProps) {
   const {
     data: likes,
     isFetching: isFetchingLikes,
-    refetch,
+    refetch: refetchLike,
   } = usePostsLikesGetQuery(post.id);
   const isLiked = username
     ? (likes?.usernames.includes(username) ?? false)
+    : false;
+
+  const [postRepostId, { isLoading: isReposting }] = usePostsRepostMutation();
+  const [postUnrepost, { isLoading: isUnrepost }] = usePostsUnrepostMutation();
+  const {
+    data: reposts,
+    isFetching: isFetchingRepost,
+    refetch: refetchReposts,
+  } = usePostsRepostGetQuery(post.id);
+
+  const isReposts = username
+    ? (reposts?.usernames.includes(username) ?? false)
     : false;
 
   const handleLike = async () => {
@@ -41,7 +57,20 @@ export default function Post({ post }: IPostProps) {
       } else {
         await postLikeId(post.id).unwrap();
       }
-      await refetch();
+      await refetchLike();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleRepost = async () => {
+    try {
+      if (isReposts) {
+        await postUnrepost(post.id).unwrap();
+      } else {
+        await postRepostId(post.id).unwrap();
+      }
+      await refetchReposts();
     } catch (error) {
       console.error(error);
     }
@@ -67,7 +96,11 @@ export default function Post({ post }: IPostProps) {
             ) : null}
             <p className="font-light text-[13px]">@{post.username}</p>
           </div>
-          <PostDropdownMenu id={post.id} />
+          <PostDropdownMenu
+            postId={post.id}
+            userId={post.user_id}
+            username={post.username}
+          />
         </div>
         <p className="text-[14px] text-[#444] font-redaction whitespace-pre-line">
           {post.text}
@@ -91,9 +124,21 @@ export default function Post({ post }: IPostProps) {
             <FaRegComment className="text-[16px]" />
             <span className="text-[13px]">{post.comments_count}</span>
           </button>
-          <button className="flex items-center gap-2 hover:text-green-500 cursor-pointer transition-all duration-200">
-            <LuRepeat2 className="text-[19px]" />
-            <span className="text-[13px]">{post.reposts_count}</span>
+          <button
+            className="flex items-center gap-2 hover:text-green-500 cursor-pointer transition-all duration-200"
+            onClick={handleRepost}
+            disabled={
+              !username || isFetchingRepost || isReposting || isUnrepost
+            }
+          >
+            {isReposts ? (
+              <BiRepeat className="text-[19px] text-green-500" />
+            ) : (
+              <LuRepeat2 className="text-[19px]" />
+            )}
+            <span className="text-[13px]">
+              {reposts?.reposts_count ?? post.reposts_count}
+            </span>
           </button>
           <button
             className="flex items-center gap-2 hover:text-red-500 cursor-pointer transition-all duration-200"

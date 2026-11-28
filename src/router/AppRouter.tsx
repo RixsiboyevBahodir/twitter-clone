@@ -22,6 +22,9 @@ import CreateUser from "../pages/auth/register/CreateUser";
 import NotFound from "../pages/notFound/NotFound";
 import Posts from "../pages/profile/pages/Posts";
 import Reposts from "../pages/profile/pages/Reposts";
+import FollowersUser from "../pages/profile/pages/FollowersUser";
+import FollowingUser from "../pages/profile/pages/FollowingUser";
+import ProfileOutlet from "../pages/profile/ProfileOutlet";
 
 export default function AppRouter() {
   return (
@@ -45,10 +48,15 @@ export default function AppRouter() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/follow" element={<Follow />} />
         <Route path="/history" element={<History />} />
-        <Route path="/profile" element={<Profile />}>
-          <Route index element={<Navigate to="posts" replace />} />
-          <Route path="posts" element={<Posts />} />
-          <Route path="reposts" element={<Reposts />} />
+        <Route path="/profile" element={<ProfileOutlet />}>
+          <Route index element={<Navigate to="main" replace />} />
+          <Route path="main" element={<Profile />}>
+            <Route index element={<Navigate to="posts" replace />} />
+            <Route path="posts" element={<Posts />} />
+            <Route path="reposts" element={<Reposts />} />
+          </Route>
+          <Route path="following" element={<FollowingUser />} />
+          <Route path="followers" element={<FollowersUser />} />
         </Route>
       </Route>
       <Route element={<MainLayout showRightSidebar={false} />}>

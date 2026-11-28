@@ -1,26 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { AuthStoreState } from "../type/userTypes";
 
-interface IUser {
-  created_at: string;
-  id: number;
-  phone: string;
-  username: string;
-}
-
-interface IToken {
-  access_token: string;
-  refresh_token: string;
-}
-
-interface IAuthLocalData {
-  token: IToken | null;
-  user: IUser | null;
-  setCredentials: (data: { token: IToken; user: IUser }) => void;
-  logout: () => void;
-}
-
-const useAuthStore = create<IAuthLocalData>()(
+const useAuthStore = create<AuthStoreState>()(
   persist(
     (set) => ({
       token: null,

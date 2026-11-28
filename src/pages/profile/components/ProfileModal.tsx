@@ -14,16 +14,7 @@ import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { Toast } from "@base-ui/react/toast";
 import useAuthStore from "../../../store/authLocalStorage";
-
-interface ProfileModalProps {
-  profile?: {
-    name: string;
-    username: string;
-    bio: string | null;
-    phone: string;
-    is_verified: boolean;
-  };
-}
+import type { ProfileModalProps } from "../../../type/userTypes";
 
 export function ProfileModal({ profile }: ProfileModalProps) {
   const [isOpen, setIsOpen] = useState(false);

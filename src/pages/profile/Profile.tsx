@@ -5,7 +5,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
 import { IoCalendarOutline } from "react-icons/io5";
 import { ProfileModal } from "./components/ProfileModal";
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 
 const UZ_MONTHS = [
   "yanvar",
@@ -73,28 +73,33 @@ export default function Profile() {
               <MdVerified className="text-blue-500" /> Get verified
             </button>
           </div>
-          <p className="text-[15px] text-gray-600">@{data?.username}</p>
-          <div className="flex items-center gap-2 py-3">
+          <p className="text-[15px] text-gray-600 pb-1">@{data?.username}</p>
+          <p className="py-1 font-semibold">{data?.bio}</p>
+          <div className="flex items-center gap-2 pb-3 py-2">
             <IoCalendarOutline />
             <p className="text-[15px] text-gray-600">{createdData}</p>
           </div>
           <div className="flex gap-7">
-            <div className="flex items-center gap-1">
-              <p className="font-semibold">{data?.following_count}</p>
-              <p className="text-gray-600 text-[14px]">Following</p>
-            </div>
-            <div className="flex items-center gap-1">
-              <p className="font-semibold">{data?.followers_count}</p>
-              <p className="text-gray-600 text-[14px]">Followers</p>
-            </div>
+            <Link
+              to={"/profile/following"}
+              className="decoration-1 hover:underline text-gray-600 text-[14px]"
+            >
+              {data?.following_count} Following
+            </Link>
+            <Link
+              to={"/profile/followers"}
+              className="decoration-1 hover:underline text-gray-600 text-[14px]"
+            >
+              {data?.followers_count} Followers
+            </Link>
           </div>
         </div>
       </div>
       <div className="flex items-center justify-around">
-        <NavLink to={"/profile/posts"} end className={tabClassName}>
+        <NavLink to={"posts"} end className={tabClassName}>
           Posts
         </NavLink>
-        <NavLink to={"/profile/reposts"} end className={tabClassName}>
+        <NavLink to={"reposts"} end className={tabClassName}>
           Reposts
         </NavLink>
       </div>

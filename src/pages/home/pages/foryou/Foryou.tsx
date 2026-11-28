@@ -4,7 +4,6 @@ import Post from "../../../../components/post/Post";
 export default function Foryou() {
   const { data } = useGetPostsQuery();
 
-  console.log(data)
   return (
     <div>
       {data?.map((post) => (

@@ -1,5 +1,5 @@
 import { Toast } from "@base-ui/react";
-import { TrashIcon } from "lucide-react";
+import { TrashIcon, UserPlus } from "lucide-react";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { useDeletePostMutation } from "../../apiSlice/posts/deletePostApi";
 import { Button } from "../ui/button";
@@ -10,14 +10,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useUserFollowMutation } from "../../apiSlice/user/userFollowApi";
 
-export default function PostDropdownMenu({ id }: { id: number }) {
+export default function PostDropdownMenu({
+  postId,
+  userId,
+  username,
+}: {
+  postId: number;
+  userId: number;
+  username: string;
+}) {
   const [deletePost, { isLoading }] = useDeletePostMutation();
+  const [followUser] = useUserFollowMutation();
   const toastManager = Toast.useToastManager();
 
   const handleDelete = async () => {
     try {
-      await deletePost(id).unwrap();
+      await deletePost(postId).unwrap();
       toastManager.add({
         title: "Post o'chirildi",
         type: "success",
@@ -26,6 +36,22 @@ export default function PostDropdownMenu({ id }: { id: number }) {
       const err = error as { data?: { error?: string } };
       toastManager.add({
         title: err.data?.error ?? "Xatolik yuz berdi",
+        type: "error",
+      });
+    }
+  };
+
+  const handleFollow = async () => {
+    try {
+      await followUser(userId).unwrap();
+      toastManager.add({
+        title: `Following ${username}`,
+        type: "success",
+      });
+    } catch (error) {
+      const err = error as { data?: { error?: string } };
+      toastManager.add({
+        title: err.data?.error ?? "Foydalanuvchini kuzatishda xatolik",
         type: "error",
       });
     }
@@ -46,9 +72,20 @@ export default function PostDropdownMenu({ id }: { id: number }) {
       />
       <DropdownMenuContent>
         <DropdownMenuGroup>
-          <DropdownMenuItem variant="destructive" onClick={handleDelete}>
+          <DropdownMenuItem
+            variant="destructive"
+            onClick={handleDelete}
+            className="cursor-pointer"
+          >
             <TrashIcon />
             Delete
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={handleFollow}
+            className="cursor-pointer text-blue-600 transition-colors hover:bg-blue-50 hover:text-blue-700 focus:bg-blue-50 focus:text-blue-700 data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-700"
+          >
+            <UserPlus className="stroke-blue-600 group-data-[highlighted]/dropdown-menu-item:stroke-blue-700" />
+            Follow @{username}
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
